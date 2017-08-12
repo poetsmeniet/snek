@@ -116,9 +116,14 @@ void moveSnek(snek *snek, size_t d){
     while(algnSeg->next != NULL){
         if(algnSeg->d != algnSeg->next->d){
             algnSeg->next->d = algnSeg->d;
-            break;
+
+            if(algnSeg->next->next != NULL)
+                algnSeg = algnSeg->next->next;
+            else
+                break;
+        }else{
+            algnSeg = algnSeg->next;
         }
-        algnSeg = algnSeg->next;
     }
 
 }
@@ -133,7 +138,7 @@ int main(void){
     snek.seg->d = 1;
     snek.seg->next = NULL;
 
-    addSegments(&snek, 11);
+    addSegments(&snek, 35);
 
     size_t testCnt = 1;
     while(1){
