@@ -46,6 +46,41 @@ void addSegments(snek *snek, size_t amount){
     }
 }
 
+void moveSnek(snek *snek, size_t d){
+    //d (direction):
+    // 0: north, up
+    // 1: east, right
+    // 2: south, down
+    // 3: west: left    
+
+    segm *segHead = snek->seg;
+    while(segHead->next != NULL){
+        
+        switch(d){
+            case 0:
+                segHead->x++;
+                break;
+            case 1:
+                segHead->y++;
+                break;
+            default:
+                break;
+        }
+        segHead = segHead->next;
+    }
+    //Not so nice, last element in linked list
+    switch(d){
+        case 0:
+            segHead->x++;
+            break;
+        case 1:
+            segHead->y++;
+            break;
+        default:
+            break;
+    }
+}
+
 int main(void){
     snek snek;
     snek.x = 5;
@@ -62,13 +97,13 @@ int main(void){
 
     while(1){
         printField(50, 30, &snek);
-        snek.seg->y++;
+        moveSnek(&snek, 1);
         sleep(1);
     }
 }
 
 void printField(size_t cols, size_t rows, snek *snek){
-    //clear();
+    clear();
     char tok = '.';
     int c;
     int r;
