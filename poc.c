@@ -35,7 +35,8 @@ void addSegments(snek *snek, size_t amount){
     for(i = 0; i < amount; i++){
         printf("jib; head->y: %d, \n", head->y);
         head->next = malloc(1 * sizeof(segm));
-        head->next->tok = segCnt+'0';
+        //head->next->tok = segCnt+'0';
+        head->next->tok = 'O';
         head->next->d = head->d;
         head->next->x = head->x;
         head->next->y = head->y - 1;
@@ -52,8 +53,25 @@ void moveSnek(snek *snek, size_t d){
     // 1: east, right
     // 2: south, down
     // 3: west: left    
-
     segm *segHead = snek->seg;
+
+    switch(segHead->d){
+        case 0:
+            snek->seg->tok = '^';
+            break;
+        case 1:
+            snek->seg->tok = '>';
+            break;
+        case 2:
+            snek->seg->tok = 'v';
+            break;
+        case 3:
+            snek->seg->tok = '<';
+            break;
+        default:
+            break;
+    }
+
     while(segHead->next != NULL){
         
         switch(segHead->d){
@@ -109,13 +127,13 @@ int main(void){
     snek snek;
     //initial segment
     snek.seg = malloc(1 * sizeof(segm));
-    snek.seg->tok = 'O';
+    snek.seg->tok = 'Q';
     snek.seg->x = 20;
     snek.seg->y = 10;
     snek.seg->d = 1;
     snek.seg->next = NULL;
 
-    addSegments(&snek, 2);
+    addSegments(&snek, 11);
 
     size_t testCnt = 1;
     while(1){
