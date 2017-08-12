@@ -63,6 +63,12 @@ void moveSnek(snek *snek, size_t d){
             case 1:
                 segHead->y++;
                 break;
+            case 2:
+                segHead->x++;
+                break;
+            case 3:
+                segHead->y--;
+                break;
             default:
                 break;
         }
@@ -70,42 +76,63 @@ void moveSnek(snek *snek, size_t d){
         segHead = segHead->next;
     }
     //Not so nice, last element in linked list
-    switch(segHead->d){
-        case 0:
-            segHead->x++;
+        switch(segHead->d){
+            case 0:
+                segHead->x--;
+                break;
+            case 1:
+                segHead->y++;
+                break;
+            case 2:
+                segHead->x++;
+                break;
+            case 3:
+                segHead->y--;
+                break;
+            default:
+                break;
+        }
+    
+    //align next segment
+    segm *algnSeg = snek->seg;
+    while(algnSeg->next != NULL){
+        if(algnSeg->d != algnSeg->next->d){
+            algnSeg->next->d = algnSeg->d;
             break;
-        case 1:
-            segHead->y++;
-            break;
-        default:
-            break;
+        }
+        algnSeg = algnSeg->next;
     }
+
 }
 
 int main(void){
     snek snek;
-    snek.x = 5;
-    snek.y = 15;
     //initial segment
     snek.seg = malloc(1 * sizeof(segm));
     snek.seg->tok = 'O';
-    snek.seg->x = 5;
-    snek.seg->y = 15;
+    snek.seg->x = 20;
+    snek.seg->y = 10;
     snek.seg->d = 1;
     snek.seg->next = NULL;
 
     addSegments(&snek, 2);
 
-    size_t testCnt = 0;
-    size_t tmpD = 1;
+    size_t testCnt = 1;
     while(1){
         printField(50, 30, &snek);
         moveSnek(&snek, snek.seg->d);
-        alignSegmentDirections(&snek);
-        sleep(1);
+        usleep(50000);
 
-        if(testCnt == 3)
+        if(testCnt == 10)
             snek.seg->d = 0;
+        if(testCnt == 20)
+            snek.seg->d = 1;
+        if(testCnt == 30)
+            snek.seg->d = 2;
+        if(testCnt == 40){
+            snek.seg->d = 3;
+            testCnt = 0;
+        }
         testCnt++;
     }
 }
@@ -124,22 +151,12 @@ void printField(size_t cols, size_t rows, snek *snek){
                 if(sS->x == r && sS->y == c){
                     printf("%c ", sS->tok);
                     skip = 1;
-                }else{
-                    //skip = 0;
                 }
-                
                 sS = sS->next;
             }
             if(skip == 0)
             printf("%c ", tok);
             skip = 0;
-
-
-            //if(snek->x == r && snek->y == c\
-            //        )
-            //    printf("%c ", snek->seg->next->tok);
-            //else
-            //    printf("%c ", tok);
         }
         printf("\n");
     }
