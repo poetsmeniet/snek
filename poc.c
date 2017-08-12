@@ -56,9 +56,9 @@ void moveSnek(snek *snek, size_t d){
     segm *segHead = snek->seg;
     while(segHead->next != NULL){
         
-        switch(d){
+        switch(segHead->d){
             case 0:
-                segHead->x++;
+                segHead->x--;
                 break;
             case 1:
                 segHead->y++;
@@ -66,10 +66,11 @@ void moveSnek(snek *snek, size_t d){
             default:
                 break;
         }
+        //get next segment
         segHead = segHead->next;
     }
     //Not so nice, last element in linked list
-    switch(d){
+    switch(segHead->d){
         case 0:
             segHead->x++;
             break;
@@ -90,15 +91,22 @@ int main(void){
     snek.seg->tok = 'O';
     snek.seg->x = 5;
     snek.seg->y = 15;
-    snek.seg->d = 2;
+    snek.seg->d = 1;
     snek.seg->next = NULL;
 
     addSegments(&snek, 2);
 
+    size_t testCnt = 0;
+    size_t tmpD = 1;
     while(1){
         printField(50, 30, &snek);
-        moveSnek(&snek, 1);
+        moveSnek(&snek, snek.seg->d);
+        alignSegmentDirections(&snek);
         sleep(1);
+
+        if(testCnt == 3)
+            snek.seg->d = 0;
+        testCnt++;
     }
 }
 
