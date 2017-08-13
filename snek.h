@@ -14,4 +14,8 @@ typedef struct snake{
     segm *seg;
 }snek;
 
+void addSegments(snek *snek, size_t amount);
+void moveSnek(snek *snek);
+void initSnek(snek *snek);
+
 #endif
