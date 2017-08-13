@@ -1,6 +1,6 @@
 NAME = snek
 
-CODE_FILES = poc.c keybInterface.c
+CODE_FILES = main.c snek.c keybInterface.c stage.c
 
 DOC_FILES = docs
 DEBUG = YES
