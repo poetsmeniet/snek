@@ -5,8 +5,6 @@
 #include "snek.h"
 #include "stage.h"
 
-void printField(int cols, int rows, snek *snek);
-
 int main(void){
     snek snek;
 
