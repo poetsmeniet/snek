@@ -1,7 +1,7 @@
 #ifndef keybInterface_H_
 #define keybInterface_H_
 
-int captureKeyCodes(snek *snek);
-int startKeybInterface(snek *snek);
+void *captureKeyCodes(void *arg);
+int startKeybInterface(void *arg);
 
 #endif
