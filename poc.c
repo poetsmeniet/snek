@@ -125,25 +125,17 @@ int main(void){
     snek.seg->d = 1;
     snek.seg->next = NULL;
 
-    addSegments(&snek, 35);
+    addSegments(&snek, 25);
 
-    size_t testCnt = 1;
+    if(!startKeybInterface(&snek)){
+        printf("Error with keyboard interface thread, exiting..\n");
+        return 1;
+    }
+
     while(1){
         printField(50, 30, &snek);
         moveSnek(&snek, snek.seg->d);
-        usleep(50000);
-
-        if(testCnt == 10)
-            snek.seg->d = 0;
-        if(testCnt == 20)
-            snek.seg->d = 1;
-        if(testCnt == 30)
-            snek.seg->d = 2;
-        if(testCnt == 40){
-            snek.seg->d = 3;
-            testCnt = 0;
-        }
-        testCnt++;
+        usleep(80000);
     }
 }
 
