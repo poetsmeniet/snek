@@ -5,7 +5,7 @@
 #include "keybInterface.h"
 #define clear() printf("\033[H\033[J") //to clear the linux term
 
-void printField(size_t cols, size_t rows, snek *snek);
+void printField(int cols, int rows, snek *snek);
 
 void addSegments(snek *snek, size_t amount){
     segm *head = snek->seg;
@@ -34,7 +34,7 @@ void addSegments(snek *snek, size_t amount){
     }
 }
 
-void moveSnek(snek *snek, size_t d){
+void moveSnek(snek *snek){
     //d (direction):
     // 0: north, up
     // 1: east, right
@@ -134,12 +134,12 @@ int main(void){
 
     while(1){
         printField(50, 30, &snek);
-        moveSnek(&snek, snek.seg->d);
+        moveSnek(&snek);
         usleep(80000);
     }
 }
 
-void printField(size_t cols, size_t rows, snek *snek){
+void printField(int cols, int rows, snek *snek){
     clear();
     char tok = '.';
     int c;

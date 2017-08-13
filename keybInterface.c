@@ -1,6 +1,7 @@
 #include <linux/input.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <pthread.h>
 #define DEVICE "/dev/input/event0"
 #include "snek.h"

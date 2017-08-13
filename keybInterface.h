@@ -2,5 +2,6 @@
 #define keybInterface_H_
 
 int captureKeyCodes(snek *snek);
+int startKeybInterface(snek *snek);
 
 #endif
