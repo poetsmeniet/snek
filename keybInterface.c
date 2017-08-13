@@ -35,14 +35,22 @@ int captureKeyCodes(snek *snek){
         read(fd, &ev, sizeof(struct input_event));
 
         //Capture keypresses, onDown
-        if(ev.code == 103 && ev.value == 1)
+        if(ev.code == 103 && ev.value == 1){
             snek->seg->d = 0; //Up
-        if(ev.code == 106 && ev.value == 1)
+            snek->seg->tok = '^';
+        }
+        if(ev.code == 106 && ev.value == 1){
             snek->seg->d = 1; //Right
-        if(ev.code == 108 && ev.value == 1)
+            snek->seg->tok = '>';
+        }
+        if(ev.code == 108 && ev.value == 1){
             snek->seg->d = 2; //Down
-        if(ev.code == 105 && ev.value == 1)
+            snek->seg->tok = 'v';
+        }
+        if(ev.code == 105 && ev.value == 1){
             snek->seg->d = 3;//Left
+            snek->seg->tok = '<';
+        }
     }
     return 0;
 }

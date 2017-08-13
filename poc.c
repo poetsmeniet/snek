@@ -42,25 +42,7 @@ void moveSnek(snek *snek){
     // 3: west: left    
     segm *segHead = snek->seg;
 
-    switch(segHead->d){
-        case 0:
-            snek->seg->tok = '^';
-            break;
-        case 1:
-            snek->seg->tok = '>';
-            break;
-        case 2:
-            snek->seg->tok = 'v';
-            break;
-        case 3:
-            snek->seg->tok = '<';
-            break;
-        default:
-            break;
-    }
-
     while(segHead->next != NULL){
-        
         switch(segHead->d){
             case 0:
                 segHead->x--;
@@ -81,22 +63,22 @@ void moveSnek(snek *snek){
         segHead = segHead->next;
     }
     //Not so nice, last element in linked list
-        switch(segHead->d){
-            case 0:
-                segHead->x--;
-                break;
-            case 1:
-                segHead->y++;
-                break;
-            case 2:
-                segHead->x++;
-                break;
-            case 3:
-                segHead->y--;
-                break;
-            default:
-                break;
-        }
+    switch(segHead->d){
+        case 0:
+            segHead->x--;
+            break;
+        case 1:
+            segHead->y++;
+            break;
+        case 2:
+            segHead->x++;
+            break;
+        case 3:
+            segHead->y--;
+            break;
+        default:
+            break;
+    }
     
     //align next segment
     segm *algnSeg = snek->seg;
@@ -119,7 +101,7 @@ int main(void){
     snek snek;
     //initial segment
     snek.seg = malloc(1 * sizeof(segm));
-    snek.seg->tok = 'Q';
+    snek.seg->tok = 'O';
     snek.seg->x = 20;
     snek.seg->y = 10;
     snek.seg->d = 1;
