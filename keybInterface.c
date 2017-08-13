@@ -1,9 +1,25 @@
 #include <linux/input.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <pthread.h>
 #define DEVICE "/dev/input/event0"
 #include "snek.h"
 #include "keybInterface.h"
+
+extern int startKeybInterface(snek *snek){
+    pthread_attr_t attr;
+    pthread_t thread1;
+
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate (&attr, PTHREAD_CREATE_DETACHED);
+
+    int rc;
+    rc=pthread_create( &thread1, &attr, captureKeyCodes, snek);
+    if (rc != 0)
+        return 0;
+
+    return 1;
+}
 
 int captureKeyCodes(snek *snek){
     int fd;
@@ -19,13 +35,13 @@ int captureKeyCodes(snek *snek){
 
         //Capture keypresses, onDown
         if(ev.code == 103 && ev.value == 1)
-            printf("Up key pressed\n");
+            snek->seg->d = 0; //Up
         if(ev.code == 106 && ev.value == 1)
-            printf("Right key pressed\n");
+            snek->seg->d = 1; //Right
         if(ev.code == 108 && ev.value == 1)
-            printf("Down key pressed\n");
+            snek->seg->d = 2; //Down
         if(ev.code == 105 && ev.value == 1)
-            printf("Left key pressed\n");
+            snek->seg->d = 3;//Left
     }
     return 0;
 }
