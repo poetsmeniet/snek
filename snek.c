@@ -14,10 +14,12 @@ extern void initSnek(snek *snek){
 
 extern void addSegments(snek *snek, size_t amount){
     segm *head = snek->seg;
+    segm *prev = snek->seg;
     size_t segCnt = 0; //Segment counter
 
     while(head->next != NULL){
         head = head->next;
+        prev = head;
         segCnt++;
     }
     segCnt++;
@@ -25,12 +27,25 @@ extern void addSegments(snek *snek, size_t amount){
     size_t i;
 
     for(i = 0; i < amount; i++){
-        printf("jib; head->y: %d, \n", head->y);
         head->next = malloc(1 * sizeof(segm));
         head->next->tok = 'O';
-        head->next->d = head->d;
-        head->next->x = head->x;
-        head->next->y = head->y - 1;
+        head->next->d = prev->d;
+        if(prev->d == 0){
+            head->next->x = head->x + 1;
+            head->next->y = head->y;
+        }
+        if(prev->d == 1){
+            head->next->x = head->x;
+            head->next->y = head->y - 1;
+        }
+        if(prev->d == 2){
+            head->next->x = head->x - 1;
+            head->next->y = head->y;
+        }
+        if(prev->d == 3){
+            head->next->x = head->x;
+            head->next->y = head->y + 1;
+        }
         head->next->next = NULL;
 
         head = head->next;
