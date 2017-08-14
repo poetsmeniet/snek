@@ -10,7 +10,10 @@ int main(void){
 
     initSnek(&snek);
 
-    addSegments(&snek, 25);
+    addSegments(&snek, 5);
+
+    food *mice = malloc(sizeof(food));
+    spawnFood(5, mice);
 
     if(!startKeybInterface(&snek)){
         printf("Error with keyboard interface thread, exiting..\n");
@@ -18,9 +21,9 @@ int main(void){
     }
 
     while(1){
-        printField(50, 30, &snek);
+        printField(50, 30, &snek, mice);
         moveSnek(&snek);
-        usleep(80000);
+        usleep(200000);
     }
 }
 
