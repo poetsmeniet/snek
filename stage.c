@@ -82,7 +82,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
     char *printBuf = malloc((3 * (cols * rows)) * sizeof(char));
     size_t bufMmb = 0;
 
-    clear();
+    //clear();
 
     char tok = '.';
     int c;

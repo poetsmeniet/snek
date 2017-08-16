@@ -11,6 +11,7 @@ typedef struct snakeSegment{
 
 typedef struct snake{
     size_t d; //Direction
+    pthread_mutex_t moveLock;
     segm *seg;
 }snek;
 

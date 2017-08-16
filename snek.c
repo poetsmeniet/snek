@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include "snek.h"
 
 extern void initSnek(snek *snek){
@@ -10,6 +11,7 @@ extern void initSnek(snek *snek){
     snek->seg->y = 10;
     snek->seg->d = 1;
     snek->seg->next = NULL;
+    pthread_mutex_init(&snek->moveLock, NULL);
 }
 
 extern void addSegments(snek *snek, size_t amount){
@@ -75,6 +77,9 @@ extern void moveSnek(snek *snek){
     // 1: east, right
     // 2: south, down
     // 3: west: left    
+
+    //Mutex lock, locks movement and direction changes by user
+    pthread_mutex_lock(&snek->moveLock);
     segm *segHead = snek->seg;
 
     while(segHead->next != NULL){
@@ -131,4 +136,6 @@ extern void moveSnek(snek *snek){
     
     //align next segment of snek
     alignNextSegment(snek);
+    
+    pthread_mutex_unlock(&snek->moveLock);
 }

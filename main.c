@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+//#include <pthread.h>
 #include "keybInterface.h"
 #include "snek.h"
 #include "stage.h"
