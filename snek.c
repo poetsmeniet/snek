@@ -21,7 +21,7 @@ size_t getListSize(void *list){
 extern void initSnek(snek *snek){
     //initial segment of snek
     snek->seg = malloc(1 * sizeof(segm));
-    snek->seg->tok = 'O';
+    snek->seg->tok = '>';
     snek->seg->x = 20;
     snek->seg->y = 10;
     snek->seg->d = 1;
@@ -104,18 +104,15 @@ extern void moveSnek(snek *snek){
     segm *segHead = snek->seg;
 
     while(segHead->next != NULL){
-        //Detect boundary and warp
+        //Detect playfield boundary 
         if(segHead->d == 1 && (segHead->y + 1) == 50)
-            segHead->y = -1;
-
+            exit(1);
         if(segHead->d == 3 && (segHead->y) == 0)
-            segHead->y = 50;
-
+            exit(1);
         if(segHead->d == 2 && (segHead->x) == 30)
-            segHead->x = -1;
-        
+            exit(1);
         if(segHead->d == 0 && (segHead->x) == 0)
-            segHead->x = 30;
+            exit(1);
 
         //Move applicable segment
         switch(segHead->d){

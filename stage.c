@@ -83,8 +83,6 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
     char *printBuf = malloc((3 * (cols * rows)) * sizeof(char));
     size_t bufMmb = 0;
 
-    clear();
-
     char tok = ' ';
     int c;
     int r;
@@ -101,7 +99,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                 if(sS->x == r && sS->y == c){//Verify segments
                     printBuf[bufMmb] = sS->tok;
                     bufMmb++;
-                    printBuf[bufMmb] = ' ';
+                    printBuf[bufMmb] = sS->tok;
                     bufMmb++;
                     skip = 1;
                 }
@@ -120,13 +118,13 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                     addSegments(snek, 1);
                     skip = 1;
                 }else{
-                if(m->x == r && m->y == c){//Verify segments
-                    printBuf[bufMmb] = m->tok;
-                    bufMmb++;
-                    printBuf[bufMmb] = ' ';
-                    bufMmb++;
-                    skip = 1;
-                }
+                    if(m->x == r && m->y == c){//Verify segments
+                        printBuf[bufMmb] = m->tok;
+                        bufMmb++;
+                        printBuf[bufMmb] = ' ';
+                        bufMmb++;
+                        skip = 1;
+                    }
 
                 }
                 foodCnt++;
@@ -140,10 +138,23 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                 bufMmb++;
             }
             skip = 0;
+
+            //Detect snek body colision on next coord
+            segm *s = snek->seg->next;
+
+            while(s != NULL){
+                if(s->x == snek->seg->x\
+                        && s->y == snek->seg->y\
+                        )
+                    exit(1);
+                s = s->next;
+            }
+
         }
         printBuf[bufMmb] = '\n';
         bufMmb++;
     }
     printf("%s\n", printBuf);
     free(printBuf);
+    clear();
 }
