@@ -4,6 +4,20 @@
 #include <pthread.h>
 #include "snek.h"
 
+size_t getListSize(void *list){
+    
+    segm *head = (segm*) list;
+    size_t sz = 0; //Segment counter
+
+    while(head->next != NULL){
+        head = head->next;
+        sz++;
+    }
+    sz++;
+
+    return sz;
+}
+
 extern void initSnek(snek *snek){
     //initial segment of snek
     snek->seg = malloc(1 * sizeof(segm));
@@ -58,14 +72,14 @@ extern void addSegments(snek *snek, size_t amount){
 
 void alignNextSegment(snek *snek){ //Creates that "snek" movement
     segm *algnSeg = snek->seg;
-    segmPs segmArr[6];
+    size_t sz = getListSize(snek->seg);
+    segmPs segmArr[sz];
     int i = 0;
 
     while(algnSeg->next != NULL){
         //add to pointer array (for reverse d assignment)
         segmArr[i].segmP = algnSeg;
         algnSeg = algnSeg->next;
-        printf("assigning with index %d .. \n", i);
         i++;
     }
     segmArr[i].segmP = algnSeg;
@@ -73,7 +87,6 @@ void alignNextSegment(snek *snek){ //Creates that "snek" movement
     size_t j;
     
     for(j = i; j > 0; j--){//Align direction of segment
-        printf(" testing slgnmnt with index j: %d\n", j);
         if(segmArr[j].segmP->d != segmArr[j - 1].segmP->d)
             segmArr[j].segmP->d = segmArr[j - 1].segmP->d;
     }
@@ -87,7 +100,7 @@ extern void moveSnek(snek *snek){
     // 3: west: left    
 
     //Mutex lock, locks movement and direction changes by user
-    pthread_mutex_lock(&snek->moveLock);
+    //pthread_mutex_lock(&snek->moveLock);
     segm *segHead = snek->seg;
 
     while(segHead->next != NULL){
@@ -145,5 +158,5 @@ extern void moveSnek(snek *snek){
     //align next segment of snek
     alignNextSegment(snek);
 
-    pthread_mutex_unlock(&snek->moveLock);
+    //pthread_mutex_unlock(&snek->moveLock);
 }

@@ -83,7 +83,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
     char *printBuf = malloc((3 * (cols * rows)) * sizeof(char));
     size_t bufMmb = 0;
 
-    //clear();
+    clear();
 
     char tok = '.';
     int c;
@@ -115,12 +115,9 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
             while(m != NULL){
                 //Detect colision with "food" and snek head
                 if(m->x == snek->seg->x && m->y == snek->seg->y){//Verify segments
-                    //move food out of field..
-                    m->x += 1000;
+                    m->x += 1000;//move food out of field..
                     deleteFoodSegment(mice, m);
-            pthread_mutex_lock(&snek->moveLock);
                     addSegments(snek, 1);
-            pthread_mutex_unlock(&snek->moveLock);
                     skip = 1;
                 }else{
                 if(m->x == r && m->y == c){//Verify segments
