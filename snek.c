@@ -45,7 +45,7 @@ extern void addSegments(snek *snek, size_t amount){
 
     for(i = 0; i < amount; i++){
         head->next = malloc(1 * sizeof(segm));
-        head->next->tok = 'O';
+        head->next->tok = 'o';
         head->next->d = prev->d;
         if(prev->d == 0){
             head->next->x = head->x + 1;

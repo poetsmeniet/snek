@@ -99,7 +99,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                 if(sS->x == r && sS->y == c){//Verify segments
                     printBuf[bufMmb] = sS->tok;
                     bufMmb++;
-                    printBuf[bufMmb] = sS->tok;
+                    printBuf[bufMmb] = ' ';
                     bufMmb++;
                     skip = 1;
                 }
