@@ -1,6 +1,7 @@
 #ifndef snek_H_
 #define snek_H_
 
+
 typedef struct snakeSegment{
     char tok;
     int x;
@@ -8,6 +9,10 @@ typedef struct snakeSegment{
     size_t d; //Direction
     struct snakeSegment *next;
 }segm;
+
+typedef struct snakeSegmentPointers{
+    segm *segmP;
+}segmPs;
 
 typedef struct snake{
     size_t d; //Direction

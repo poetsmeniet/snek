@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <pthread.h>
 #include "snek.h"
 #include "stage.h"
 #define clear() printf("\033[H\033[J") //to clear the linux term
@@ -117,7 +118,9 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                     //move food out of field..
                     m->x += 1000;
                     deleteFoodSegment(mice, m);
-                    addSegments(snek, 5);
+            pthread_mutex_lock(&snek->moveLock);
+                    addSegments(snek, 1);
+            pthread_mutex_unlock(&snek->moveLock);
                     skip = 1;
                 }else{
                 if(m->x == r && m->y == c){//Verify segments
