@@ -85,7 +85,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
 
     clear();
 
-    char tok = '.';
+    char tok = ' ';
     int c;
     int r;
     int skip = 0;
