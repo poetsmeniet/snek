@@ -163,6 +163,25 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
             }
 
         }
+
+        //Detect playfield boundary 
+        if(snek->seg->d == 1 && (snek->seg->y + 1) == 50){
+            printf("%s\n", printBuf);
+            exit(1);
+        }
+        if(snek->seg->d == 3 && (snek->seg->y) == 0){
+            printf("%s\n", printBuf);
+            exit(1);
+        }
+        if(snek->seg->d == 2 && (snek->seg->x) == 29){
+            printf("%s\n", printBuf);
+            exit(1);
+        }
+        if(snek->seg->d == 0 && (snek->seg->x) == 0){
+            printf("%s\n", printBuf);
+            exit(1);
+        }
+
         printBuf[bufMmb] = '\n';
         bufMmb++;
     }

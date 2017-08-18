@@ -45,7 +45,7 @@ extern void addSegments(snek *snek, size_t amount){
 
     for(i = 0; i < amount; i++){
         head->next = malloc(1 * sizeof(segm));
-        head->next->tok = 'o';
+        head->next->tok = 'O';
         head->next->d = prev->d;
         if(prev->d == 0){
             head->next->x = head->x + 1;
@@ -104,16 +104,6 @@ extern void moveSnek(snek *snek){
     segm *segHead = snek->seg;
 
     while(segHead->next != NULL){
-        //Detect playfield boundary 
-        if(segHead->d == 1 && (segHead->y + 1) == 50)
-            exit(1);
-        if(segHead->d == 3 && (segHead->y) == 0)
-            exit(1);
-        if(segHead->d == 2 && (segHead->x) == 30)
-            exit(1);
-        if(segHead->d == 0 && (segHead->x) == 0)
-            exit(1);
-
         //Move applicable segment
         switch(segHead->d){
             case 0:
