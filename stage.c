@@ -83,16 +83,26 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
     char *printBuf = malloc((3 * (cols * rows)) * sizeof(char));
     size_t bufMmb = 0;
 
-    char tok = ' ';
+    char tok1 = ' ';
+    char tok2 = ' ';
     int c;
     int r;
     int skip = 0;
-    int tstCnt1= 0;
 
     //Go through grid and place snek segments in print buf
     for(r = 0; r < rows; r++){
         for(c = 0; c < cols; c++){
-            tstCnt1++;
+            if(c == 0 || r == 0){
+                tok1 = '.';
+                tok2 = '.';
+            }else if(c == 49 || r == 29){
+                tok1 = '.';
+                tok2 = '.';
+            }else{
+                tok1 = ' ';
+                tok2 = ' ';
+            }
+
             //Add snek to buffer/ field
             segm *sS = snek->seg;
             while(sS != NULL){
@@ -132,9 +142,9 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
             }
 
             if(skip == 0){ //Otherwise print something else
-                printBuf[bufMmb] = tok;
+                printBuf[bufMmb] = tok1;
                 bufMmb++;
-                printBuf[bufMmb] = ' ';
+                printBuf[bufMmb] = tok2;
                 bufMmb++;
             }
             skip = 0;
@@ -145,8 +155,10 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
             while(s != NULL){
                 if(s->x == snek->seg->x\
                         && s->y == snek->seg->y\
-                        )
+                        ){
+                    printf("%s\n", printBuf);
                     exit(1);
+                }
                 s = s->next;
             }
 
