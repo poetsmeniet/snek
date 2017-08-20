@@ -15,7 +15,7 @@ typedef struct food{
 }food;
 
 void printField(int cols, int rows, snek *snek, food *mice);
-void spawnFood(size_t amount, food *mice);
-void pushFoodSegments(food *mice, size_t amount);
+void spawnFood(size_t amount, food *mice, snek *snek);
+void pushFoodSegments(food *mice, size_t amount, snek *snek);
 
 #endif

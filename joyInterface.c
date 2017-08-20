@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
-//#define DEVICE "/dev/input/by-id/usb-SFC30_SFC30_Joystick-joystick"
-#define DEVICE "/dev/hidraw4"
+#define DEVICE "/dev/input/by-id/usb-SFC30_SFC30_Joystick-joystick"
+//#define DEVICE "/dev/hidraw4"
 #include "snek.h"
 #include "joyInterface.h"
 
@@ -28,7 +28,7 @@ extern int startJoyInterface(void *arg){
 //For 8bitdo via BT (hidraw device)
 //Yes I clearly don't know yet what is going on
 //learning is on the todo list though :D
-void *captureJoyCodes(void *arg){
+void *captureJoyCodesHidraw(void *arg){
     snek *sn;
     sn = (snek *)arg;
     int fd;
@@ -50,8 +50,8 @@ void *captureJoyCodes(void *arg){
     while (1){
         read(fd, &js, sizeof(struct input_event));
 
-        //printf("%d\t%d\t%d", js.value, js.value1, js.value2);
-        //printf("\n");
+        printf("%d\t%d\t%d", js.value, js.value1, js.value2);
+        printf("\n");
         //Capture buttons, onDown
         if(js.value == 8326915 && sn->seg->d != 2){
             sn->seg->d = 0; //Up
@@ -73,7 +73,7 @@ void *captureJoyCodes(void *arg){
 }
 
 //For 8bitdo via USB
-void *captureJoyCodesUsb(void *arg){
+void *captureJoyCodes(void *arg){
     snek *sn;
     sn = (snek *)arg;
     int fd;

@@ -18,12 +18,14 @@ size_t getListSize(void *list){
     return sz;
 }
 
-extern void initSnek(snek *snek){
+extern void initSnek(snek *snek, int COLS, int ROWS){
     //initial segment of snek
+    snek->cols = COLS; //storing field dimensions here for convenience
+    snek->rows = ROWS;
     snek->seg = malloc(1 * sizeof(segm));
     snek->seg->tok = '>';
-    snek->seg->x = 20;
-    snek->seg->y = 10;
+    snek->seg->x = 2;
+    snek->seg->y = 1;
     snek->seg->d = 1;
     snek->seg->next = NULL;
     pthread_mutex_init(&snek->moveLock, NULL);

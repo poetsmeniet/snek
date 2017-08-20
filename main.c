@@ -5,16 +5,18 @@
 #include "joyInterface.h"
 #include "snek.h"
 #include "stage.h"
+#define COLS 20 
+#define ROWS 30
 
 int main(void){
     snek snek;
 
-    initSnek(&snek);
+    initSnek(&snek, COLS, ROWS);
 
-    addSegments(&snek, 10);
+    addSegments(&snek, 1);
 
     food *mice = malloc(sizeof(food));
-    spawnFood(5, mice);
+    spawnFood(5, mice, &snek);
 
     if(!startKeybInterface(&snek)){
         printf("Error with keyboard interface thread, exiting..\n");
@@ -24,7 +26,7 @@ int main(void){
         printf("Error with joy interface thread, cont..\n");
 
     while(1){
-        printField(50, 30, &snek, mice);
+        printField(COLS, ROWS, &snek, mice);
         moveSnek(&snek);
         usleep(200000);
     }

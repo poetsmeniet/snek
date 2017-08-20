@@ -15,6 +15,8 @@ typedef struct snakeSegmentPointers{
 }segmPs;
 
 typedef struct snake{
+    int cols;
+    int rows;
     size_t d; //Direction
     pthread_mutex_t moveLock;
     segm *seg;
@@ -22,6 +24,6 @@ typedef struct snake{
 
 void addSegments(snek *snek, size_t amount);
 void moveSnek(snek *snek);
-void initSnek(snek *snek);
+void initSnek(snek *snek, int COLS, int ROWS);
 
 #endif

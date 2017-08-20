@@ -6,7 +6,8 @@
 #include "stage.h"
 #define clear() printf("\033[H\033[J") //to clear the linux term
 
-void deleteFoodSegment(food *mice, fSeg *seg){
+//Needs work
+void deleteFoodSegment(food *mice, fSeg *seg, snek *snek){
     fSeg *head = mice->seg;
     fSeg *prevSeg = head;
 
@@ -14,6 +15,7 @@ void deleteFoodSegment(food *mice, fSeg *seg){
         if(head == seg){
             //relink previous item in list to next, if needed
             if(head->next != NULL){
+                //printf("relinking\n");
                 prevSeg->next = head->next;
             }
             else{
@@ -37,10 +39,10 @@ void deleteFoodSegment(food *mice, fSeg *seg){
         foodCnt++;
     }
     if(foodCnt == 1)
-        pushFoodSegments(mice, (rand() % 5) + 1);
+        pushFoodSegments(mice, (rand() % 5) + 1, snek);
 }
 
-extern void pushFoodSegments(food *mice, size_t amount){
+extern void pushFoodSegments(food *mice, size_t amount, snek *snek){
     fSeg *head = mice->seg;
     size_t segCnt = 0; //Segment counter
 
@@ -56,27 +58,46 @@ extern void pushFoodSegments(food *mice, size_t amount){
         head->next = malloc(1 * sizeof(segm));
         head->next->tok = i+1+'0';
         head->next->d = head->d;
-        head->next->x = rand() % 27 + 2;
-        head->next->y = rand() % 47 + 2;
+        head->next->x = rand() % snek->rows;
+        head->next->y = rand() % snek->cols;
         head->next->next = NULL;
+    if(head->next->x == 0)
+        head->next->x+=2;
+    if(head->next->y == 0)
+        head->next->y+=2;
+    if(head->next->x == snek->cols)
+        head->next->x-=2;
+    if(head->next->y == snek->rows)
+        head->next->y-=2;
 
         head = head->next;
         segCnt++;
     }
 }
 
-void spawnFood(size_t amount, food *mice){
+void spawnFood(size_t amount, food *mice, snek *snek){
     srand(time(NULL));
 
     mice->d = 0;
     mice->seg = malloc(sizeof(fSeg));
-    mice->seg->tok = '0';
-    mice->seg->x = rand() % 27 + 2;
-    mice->seg->y = rand() % 47 + 2;
+    mice->seg->tok = 'X';
+    mice->seg->x = rand() % snek->rows;
+    mice->seg->y = rand() % snek->cols;
     mice->seg->d = 0;
     mice->seg->next = NULL;
 
-    pushFoodSegments(mice, amount);
+    if(mice->seg->x == 0)
+        mice->seg->x+=2;
+    if(mice->seg->y == 0)
+        mice->seg->y+=2;
+    if(mice->seg->x == snek->cols)
+        mice->seg->x-=2;
+    if(mice->seg->y == snek->rows)
+        mice->seg->y-=2;
+
+    //
+
+    pushFoodSegments(mice, amount, snek);
 }
 
 extern void printField(int cols, int rows, snek *snek, food *mice){
@@ -93,11 +114,21 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
     for(r = 0; r < rows; r++){
         for(c = 0; c < cols; c++){
             if(c == 0 || r == 0){
-                tok1 = '.';
-                tok2 = '.';
-            }else if(c == 49 || r == 29){
-                tok1 = '.';
-                tok2 = '.';
+                if(r == 0){
+                    tok1 = '.';
+                    tok2 = '.';
+                }else{
+                    tok1 = '.';
+                    tok2 = ' ';
+                }
+            }else if(c == (snek->cols -1) || r == (snek->rows - 1)){
+                if(c == (snek->cols -1)){
+                    tok1 = ' ';
+                    tok2 = '.';
+                }else{
+                    tok1 = '.';
+                    tok2 = '.';
+                }
             }else{
                 tok1 = ' ';
                 tok2 = ' ';
@@ -124,7 +155,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                 //Detect colision with "food" and snek head
                 if(m->x == snek->seg->x && m->y == snek->seg->y){//Verify segments
                     m->x += 1000;//move food out of field..
-                    deleteFoodSegment(mice, m);
+                    deleteFoodSegment(mice, m, snek);
                     addSegments(snek, 1);
                     skip = 1;
                 }else{
@@ -165,7 +196,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
         }
 
         //Detect playfield boundary 
-        if(snek->seg->d == 1 && (snek->seg->y + 1) == 50){
+        if(snek->seg->d == 1 && (snek->seg->y + 1) == snek->cols){
             printf("%s\n", printBuf);
             exit(1);
         }
@@ -173,7 +204,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
             printf("%s\n", printBuf);
             exit(1);
         }
-        if(snek->seg->d == 2 && (snek->seg->x) == 29){
+        if(snek->seg->d == 2 && (snek->seg->x) == (snek->rows - 1)){
             printf("%s\n", printBuf);
             exit(1);
         }
