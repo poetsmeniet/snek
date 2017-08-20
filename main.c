@@ -5,7 +5,7 @@
 #include "joyInterface.h"
 #include "snek.h"
 #include "stage.h"
-#define COLS 20 
+#define COLS 15 
 #define ROWS 30
 
 int main(void){

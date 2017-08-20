@@ -142,7 +142,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                     bufMmb++;
                     printBuf[bufMmb] = ' ';
                     bufMmb++;
-                    skip = 1;
+                    skip++;
                 }
                 sS = sS->next;
             }
@@ -157,14 +157,14 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                     m->x += 1000;//move food out of field..
                     deleteFoodSegment(mice, m, snek);
                     addSegments(snek, 1);
-                    skip = 1;
+                    skip++;
                 }else{
                     if(m->x == r && m->y == c){//Verify segments
                         printBuf[bufMmb] = m->tok;
                         bufMmb++;
                         printBuf[bufMmb] = ' ';
                         bufMmb++;
-                        skip = 1;
+                        skip++;
                     }
 
                 }
@@ -196,7 +196,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
         }
 
         //Detect playfield boundary 
-        if(snek->seg->d == 1 && (snek->seg->y + 1) == snek->cols){
+        if(snek->seg->d == 1 && (snek->seg->y) == snek->cols){
             printf("%s\n", printBuf);
             exit(1);
         }
@@ -204,7 +204,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
             printf("%s\n", printBuf);
             exit(1);
         }
-        if(snek->seg->d == 2 && (snek->seg->x) == (snek->rows - 1)){
+        if(snek->seg->d == 2 && (snek->seg->x) == snek->rows){
             printf("%s\n", printBuf);
             exit(1);
         }
