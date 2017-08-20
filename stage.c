@@ -56,8 +56,8 @@ extern void pushFoodSegments(food *mice, size_t amount){
         head->next = malloc(1 * sizeof(segm));
         head->next->tok = i+1+'0';
         head->next->d = head->d;
-        head->next->x = rand() % 30;
-        head->next->y = rand() % 50;
+        head->next->x = rand() % 27 + 2;
+        head->next->y = rand() % 47 + 2;
         head->next->next = NULL;
 
         head = head->next;
@@ -71,8 +71,8 @@ void spawnFood(size_t amount, food *mice){
     mice->d = 0;
     mice->seg = malloc(sizeof(fSeg));
     mice->seg->tok = '0';
-    mice->seg->x = rand() % 30;
-    mice->seg->y = rand() % 50;
+    mice->seg->x = rand() % 27 + 2;
+    mice->seg->y = rand() % 47 + 2;
     mice->seg->d = 0;
     mice->seg->next = NULL;
 
