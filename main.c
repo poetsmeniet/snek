@@ -27,8 +27,9 @@ int main(void){
 
     while(1){
         printField(COLS, ROWS, &snek, mice);
-        moveSnek(&snek);
-        usleep(200000);
+        //moveSnek(&snek);
+        usleep(300000);
     }
+    return 0;
 }
 

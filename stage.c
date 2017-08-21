@@ -6,6 +6,79 @@
 #include "stage.h"
 #define clear() printf("\033[H\033[J") //to clear the linux term
 
+static int foodFieldCollision(food *obj, snek *snek){
+        if(obj->seg->d == 1 && (obj->seg->y) >= (snek->cols - 1)){
+            return 1;
+        }
+        if(obj->seg->d == 3 && (obj->seg->y) <= 0){
+            return 1;
+        }
+        if(obj->seg->d == 2 && (obj->seg->x) >= (snek->rows - 1)){
+            return 1;
+        }
+        if(obj->seg->d == 0 && (obj->seg->x) <= 0){
+            return 1;
+        }
+        return 0;
+}
+
+static void moveFood(food *mice, snek *snek){
+    printf("food x/y: %d/%d\n", mice->seg->x, mice->seg->y);
+
+    if(foodFieldCollision(mice, snek)){
+        //Reverse direction
+        int newD;
+        if(mice->seg->d < 2)
+            newD = mice->seg->d + 2;
+        else
+            newD = mice->seg->d - 2;
+
+        mice->seg->d = newD;
+        printf("newD: %d\n", newD);
+    }
+
+    //Move segment 
+    if(mice->seg->d == 0)
+        mice->seg->x-=1;
+    if(mice->seg->d == 2)
+        mice->seg->x+=1;
+    if(mice->seg->d == 1)
+        mice->seg->y+=1;
+    if(mice->seg->d == 3)
+        mice->seg->y-=1;
+
+    mice->seg->d = rand() % 4;
+}
+
+static int fieldCollision(snek *snek){
+        if(snek->seg->d == 1 && (snek->seg->y) == snek->cols){
+            return 1;
+        }
+        if(snek->seg->d == 3 && (snek->seg->y) == 0){
+            return 1;
+        }
+        if(snek->seg->d == 2 && (snek->seg->x) == snek->rows){
+            return 1;
+        }
+        if(snek->seg->d == 0 && (snek->seg->x) == 0){
+            return 1;
+        }
+        return 0;
+}
+
+static int selfCollision(snek *snek){
+        segm *s = snek->seg->next;
+
+        while(s != NULL){
+            if(s->x == snek->seg->x\
+                    && s->y == snek->seg->y\
+                    )
+                return 1;
+            s = s->next;
+        }
+        return 0;
+}
+
 //Needs work
 void deleteFoodSegment(food *mice, fSeg *seg, snek *snek){
     fSeg *head = mice->seg;
@@ -61,14 +134,16 @@ extern void pushFoodSegments(food *mice, size_t amount, snek *snek){
         head->next->x = rand() % snek->rows;
         head->next->y = rand() % snek->cols;
         head->next->next = NULL;
-    if(head->next->x == 0)
-        head->next->x+=2;
-    if(head->next->y == 0)
-        head->next->y+=2;
-    if(head->next->x == snek->cols)
-        head->next->x-=2;
-    if(head->next->y == snek->rows)
-        head->next->y-=2;
+
+        //Move food a bit from borders
+        if(head->next->x == 0 || head->next->x == 1)
+            head->next->x+=2;
+        if(head->next->y == 0 || head->next->y == 1)
+            head->next->y+=2;
+        if(head->next->x == snek->rows || head->next->x == (snek->rows - 1))
+            head->next->x-=2;
+        if(head->next->y == snek->cols || head->next->y == (snek->cols - 1))
+            head->next->y-=2;
 
         head = head->next;
         segCnt++;
@@ -80,22 +155,21 @@ void spawnFood(size_t amount, food *mice, snek *snek){
 
     mice->d = 0;
     mice->seg = malloc(sizeof(fSeg));
-    mice->seg->tok = 'X';
+    mice->seg->tok = '0';
     mice->seg->x = rand() % snek->rows;
     mice->seg->y = rand() % snek->cols;
-    mice->seg->d = 0;
+    //mice->seg->d = rand() % 3;
+    mice->seg->d = 3;
     mice->seg->next = NULL;
 
-    if(mice->seg->x == 0)
+    if(mice->seg->x == 0 || mice->seg->x == 1)
         mice->seg->x+=2;
-    if(mice->seg->y == 0)
+    if(mice->seg->y == 0 || mice->seg->y == 1)
         mice->seg->y+=2;
-    if(mice->seg->x == snek->cols)
+    if(mice->seg->x == snek->rows || mice->seg->x == (snek->rows - 1))
         mice->seg->x-=2;
-    if(mice->seg->y == snek->rows)
+    if(mice->seg->y == snek->cols || mice->seg->y == (snek->cols -1))
         mice->seg->y-=2;
-
-    //
 
     pushFoodSegments(mice, amount, snek);
 }
@@ -179,43 +253,26 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                 bufMmb++;
             }
             skip = 0;
-
-            //Detect snek body colision on next coord
-            segm *s = snek->seg->next;
-
-            while(s != NULL){
-                if(s->x == snek->seg->x\
-                        && s->y == snek->seg->y\
-                        ){
-                    printf("%s\n", printBuf);
-                    exit(1);
-                }
-                s = s->next;
-            }
-
         }
 
-        //Detect playfield boundary 
-        if(snek->seg->d == 1 && (snek->seg->y) == snek->cols){
-            printf("%s\n", printBuf);
-            exit(1);
+        //Detect snek body colision on next coord
+        if(selfCollision(snek)){
+                printf("%s\n", printBuf);
+                exit(1);
         }
-        if(snek->seg->d == 3 && (snek->seg->y) == 0){
-            printf("%s\n", printBuf);
-            exit(1);
+
+        //Detect playfield boundary collision
+        if(fieldCollision(snek)){
+                printf("%s\n", printBuf);
+                exit(1);
         }
-        if(snek->seg->d == 2 && (snek->seg->x) == snek->rows){
-            printf("%s\n", printBuf);
-            exit(1);
-        }
-        if(snek->seg->d == 0 && (snek->seg->x) == 0){
-            printf("%s\n", printBuf);
-            exit(1);
-        }
+
 
         printBuf[bufMmb] = '\n';
         bufMmb++;
     }
+    moveFood(mice, snek);
+
     printf("%s\n", printBuf);
     free(printBuf);
     clear();
