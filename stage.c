@@ -6,48 +6,51 @@
 #include "stage.h"
 #define clear() printf("\033[H\033[J") //to clear the linux term
 
-static int foodFieldCollision(food *obj, snek *snek){
-        if(obj->seg->d == 1 && (obj->seg->y) >= (snek->cols - 1)){
+static int foodFieldCollision(fSeg *obj, snek *snek){
+        if(obj->d == 1 && (obj->y) >= (snek->cols - 1)){
             return 1;
         }
-        if(obj->seg->d == 3 && (obj->seg->y) <= 0){
+        if(obj->d == 3 && (obj->y) <= 0){
             return 1;
         }
-        if(obj->seg->d == 2 && (obj->seg->x) >= (snek->rows - 1)){
+        if(obj->d == 2 && (obj->x) >= (snek->rows - 1)){
             return 1;
         }
-        if(obj->seg->d == 0 && (obj->seg->x) <= 0){
+        if(obj->d == 0 && (obj->x) <= 0){
             return 1;
         }
         return 0;
 }
 
-static void moveFood(food *mice, snek *snek){
-    printf("food x/y: %d/%d\n", mice->seg->x, mice->seg->y);
+extern void moveFood(food *mice, snek *snek){
+    fSeg *ft = mice->seg;
+    while(ft != NULL){
+        //Food collides with field boundary
+        if(foodFieldCollision(ft, snek)){
+            //Reverse direction
+            int newD;
+            if(ft->d < 2)
+                newD = ft->d + 2;
+            else
+                newD = ft->d - 2;
 
-    if(foodFieldCollision(mice, snek)){
-        //Reverse direction
-        int newD;
-        if(mice->seg->d < 2)
-            newD = mice->seg->d + 2;
-        else
-            newD = mice->seg->d - 2;
+            ft->d = newD;
+        }
 
-        mice->seg->d = newD;
-        printf("newD: %d\n", newD);
+        //Move segment 
+        if(ft->d == 0)
+            ft->x-=1;
+        if(ft->d == 2)
+            ft->x+=1;
+        if(ft->d == 1)
+            ft->y+=1;
+        if(ft->d == 3)
+            ft->y-=1;
+
+        ft->d = rand() % 4;
+        
+        ft = ft->next;
     }
-
-    //Move segment 
-    if(mice->seg->d == 0)
-        mice->seg->x-=1;
-    if(mice->seg->d == 2)
-        mice->seg->x+=1;
-    if(mice->seg->d == 1)
-        mice->seg->y+=1;
-    if(mice->seg->d == 3)
-        mice->seg->y-=1;
-
-    mice->seg->d = rand() % 4;
 }
 
 static int fieldCollision(snek *snek){
@@ -271,7 +274,9 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
         printBuf[bufMmb] = '\n';
         bufMmb++;
     }
-    moveFood(mice, snek);
+
+    //Food moves
+    //moveFood(mice, snek);
 
     printf("%s\n", printBuf);
     free(printBuf);
