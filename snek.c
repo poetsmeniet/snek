@@ -25,7 +25,7 @@ extern void initSnek(snek *snek, int COLS, int ROWS){
     snek->seg = malloc(1 * sizeof(segm));
     snek->seg->tok = '>';
     snek->seg->x = 2;
-    snek->seg->y = 1;
+    snek->seg->y = 5;
     snek->seg->d = 1;
     snek->seg->next = NULL;
     pthread_mutex_init(&snek->moveLock, NULL);

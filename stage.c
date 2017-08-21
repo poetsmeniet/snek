@@ -7,23 +7,23 @@
 #define clear() printf("\033[H\033[J") //to clear the linux term
 
 static int foodFieldCollision(fSeg *obj, snek *snek){
-        if(obj->d == 1 && (obj->y) >= (snek->cols - 1)){
+        if(obj->d == 1 && (obj->y) >= (snek->cols - 2)){
             return 1;
         }
-        if(obj->d == 3 && (obj->y) <= 0){
+        if(obj->d == 3 && (obj->y) <= 1){
             return 1;
         }
-        if(obj->d == 2 && (obj->x) >= (snek->rows - 1)){
+        if(obj->d == 2 && (obj->x) >= (snek->rows - 2)){
             return 1;
         }
-        if(obj->d == 0 && (obj->x) <= 0){
+        if(obj->d == 0 && (obj->x) <= 1){
             return 1;
         }
         return 0;
 }
 
 extern void moveFood(food *mice, snek *snek){
-    float speed = 0.5; //Hardcoding this for now
+    float speed = 0.01; //Hardcoding this for now
     fSeg *ft = mice->seg;
 
     while(ft != NULL){
@@ -39,19 +39,23 @@ extern void moveFood(food *mice, snek *snek){
             ft->d = newD;
         }
 
+        //multiplier
+        //int mp = rand() % 10;
+        int mp = 10.0;
+
         //Move segment 
         if(ft->d == 0)
-            ft->x -= speed;
+            ft->x -= speed * mp;
         if(ft->d == 2)
-            ft->x += speed;
+            ft->x += speed * mp;
         if(ft->d == 1)
-            ft->y += speed;
+            ft->y += speed * mp;
         if(ft->d == 3)
-            ft->y -= speed;
+            ft->y -= speed * mp;
 
         //Only change direction on whole numbers (compl coords)
         if(ft->x == (int)ft->x || ft->y == (int)ft->y)
-            ft->d = rand() % 3;
+            ft->d = rand() % 4;
         
         ft = ft->next;
     }
