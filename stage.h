@@ -3,8 +3,8 @@
 
 typedef struct foodSegments{
     char tok;
-    int x;
-    int y;
+    float x;
+    float y;
     size_t d; //Direction
     struct foodSegments *next;
 }fSeg;

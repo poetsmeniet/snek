@@ -23,7 +23,9 @@ static int foodFieldCollision(fSeg *obj, snek *snek){
 }
 
 extern void moveFood(food *mice, snek *snek){
+    float speed = 0.5; //Hardcoding this for now
     fSeg *ft = mice->seg;
+
     while(ft != NULL){
         //Food collides with field boundary
         if(foodFieldCollision(ft, snek)){
@@ -39,15 +41,17 @@ extern void moveFood(food *mice, snek *snek){
 
         //Move segment 
         if(ft->d == 0)
-            ft->x-=1;
+            ft->x -= speed;
         if(ft->d == 2)
-            ft->x+=1;
+            ft->x += speed;
         if(ft->d == 1)
-            ft->y+=1;
+            ft->y += speed;
         if(ft->d == 3)
-            ft->y-=1;
+            ft->y -= speed;
 
-        ft->d = rand() % 4;
+        //Only change direction on whole numbers (compl coords)
+        if(ft->x == (int)ft->x || ft->y == (int)ft->y)
+            ft->d = rand() % 3;
         
         ft = ft->next;
     }
@@ -230,13 +234,13 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
 
             while(m != NULL){
                 //Detect colision with "food" and snek head
-                if(m->x == snek->seg->x && m->y == snek->seg->y){//Verify segments
+                if((int) m->x == snek->seg->x && (int) m->y == snek->seg->y){//Verify segments
                     m->x += 1000;//move food out of field..
                     deleteFoodSegment(mice, m, snek);
                     addSegments(snek, 1);
                     skip++;
                 }else{
-                    if(m->x == r && m->y == c){//Verify segments
+                    if((int) m->x == r && (int) m->y == c){//Verify segments
                         printBuf[bufMmb] = m->tok;
                         bufMmb++;
                         printBuf[bufMmb] = ' ';

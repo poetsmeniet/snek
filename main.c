@@ -6,7 +6,7 @@
 #include "snek.h"
 #include "stage.h"
 #define COLS 15 
-#define ROWS 30
+#define ROWS 20 
 
 int main(void){
     snek snek;
