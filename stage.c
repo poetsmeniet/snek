@@ -40,8 +40,8 @@ extern void moveFood(food *mice, snek *snek){
         }
 
         //multiplier
-        //int mp = rand() % 10;
-        int mp = 10.0;
+        //int mp = ft->speed;
+        int mp = 1.0;
 
         //Move segment 
         if(ft->d == 0)
@@ -144,6 +144,7 @@ extern void pushFoodSegments(food *mice, size_t amount, snek *snek){
         head->next->d = head->d;
         head->next->x = rand() % snek->rows;
         head->next->y = rand() % snek->cols;
+        head->next->speed = rand() % 10;
         head->next->next = NULL;
 
         //Move food a bit from borders
@@ -169,8 +170,8 @@ void spawnFood(size_t amount, food *mice, snek *snek){
     mice->seg->tok = '0';
     mice->seg->x = rand() % snek->rows;
     mice->seg->y = rand() % snek->cols;
-    //mice->seg->d = rand() % 3;
-    mice->seg->d = 3;
+    mice->seg->speed = rand() % 10;
+    mice->seg->d = rand() % 4;
     mice->seg->next = NULL;
 
     if(mice->seg->x == 0 || mice->seg->x == 1)
