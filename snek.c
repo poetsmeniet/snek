@@ -4,6 +4,27 @@
 #include <pthread.h>
 #include "snek.h"
 
+extern void animateSnek(snek *snek, size_t type){
+    segm *head = snek->seg->next;
+    char tok = 'O';
+
+    if(type == 1)
+        tok = 'X';
+    else
+        snek->animateCnt = 0;
+
+    while(head->next != NULL){
+        head->tok = tok;
+        head = head->next;
+    }
+    head->tok = tok;
+
+    snek->animate = 1;
+
+    //if(type == 1)
+    //    animateSnek(snek, 0);
+}
+
 size_t getListSize(void *list){
     
     segm *head = (segm*) list;

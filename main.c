@@ -13,7 +13,7 @@ int main(void){
 
     initSnek(&snek, COLS, ROWS);
 
-    addSegments(&snek, 1);
+    addSegments(&snek, 5);
 
     food *mice = malloc(sizeof(food));
     spawnFood(5, mice, &snek);

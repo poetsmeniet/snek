@@ -124,6 +124,8 @@ void deleteFoodSegment(food *mice, fSeg *seg, snek *snek){
     }
     if(foodCnt == 1)
         pushFoodSegments(mice, (rand() % 5) + 1, snek);
+
+    animateSnek(snek, 1);
 }
 
 extern void pushFoodSegments(food *mice, size_t amount, snek *snek){
@@ -144,7 +146,7 @@ extern void pushFoodSegments(food *mice, size_t amount, snek *snek){
         head->next->d = head->d;
         head->next->x = rand() % snek->rows;
         head->next->y = rand() % snek->cols;
-        head->next->speed = rand() % 10;
+        head->next->speed = rand() % 5;
         head->next->next = NULL;
 
         //Move food a bit from borders
@@ -279,6 +281,10 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                 exit(1);
         }
 
+        if(snek->animate == 1 && snek->animateCnt == 80)
+            animateSnek(snek, 0);
+        else if(snek->animate == 1 && snek->animateCnt <= 80)
+            snek->animateCnt++;
 
         printBuf[bufMmb] = '\n';
         bufMmb++;
