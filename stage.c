@@ -23,7 +23,7 @@ static int foodFieldCollision(fSeg *obj, snek *snek){
 }
 
 extern void moveFood(food *mice, snek *snek){
-    float speed = 0.01; //Hardcoding this for now
+    float speed = 0.1; //Hardcoding this for now
     fSeg *ft = mice->seg;
 
     while(ft != NULL){
@@ -40,8 +40,8 @@ extern void moveFood(food *mice, snek *snek){
         }
 
         //multiplier
-        //int mp = ft->speed;
-        int mp = 1.0;
+        int mp = ft->speed;
+        //int mp = 200.0;
 
         //Move segment 
         if(ft->d == 0)
@@ -54,7 +54,7 @@ extern void moveFood(food *mice, snek *snek){
             ft->y -= speed * mp;
 
         //Only change direction on whole numbers (compl coords)
-        if(ft->x == (int)ft->x || ft->y == (int)ft->y)
+        //if(ft->x == (int)ft->x || ft->y == (int)ft->y)
             ft->d = rand() % 4;
         
         ft = ft->next;
@@ -139,7 +139,7 @@ extern void pushFoodSegments(food *mice, size_t amount, snek *snek){
     size_t i;
 
     for(i = 0; i < amount; i++){
-        head->next = malloc(1 * sizeof(segm));
+        head->next = malloc(1 * sizeof(fSeg));
         head->next->tok = i+1+'0';
         head->next->d = head->d;
         head->next->x = rand() % snek->rows;
