@@ -9,7 +9,7 @@ extern void animateSnek(snek *snek, size_t type){
     char tok = 'O';
 
     if(type == 1)
-        tok = 'X';
+        tok = '0';
     else
         snek->animateCnt = 0;
 
@@ -48,6 +48,7 @@ extern void initSnek(snek *snek, int COLS, int ROWS){
     snek->seg->x = 2;
     snek->seg->y = 5;
     snek->seg->d = 1;
+    snek->totalPoints = 0;
     snek->seg->next = NULL;
     pthread_mutex_init(&snek->moveLock, NULL);
 }

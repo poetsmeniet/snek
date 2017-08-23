@@ -7,6 +7,7 @@ typedef struct foodSegments{
     float y;
     size_t d; //Direction
     float speed;
+    size_t points;
     struct foodSegments *next;
 }fSeg;
 

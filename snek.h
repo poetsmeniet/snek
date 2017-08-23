@@ -19,6 +19,7 @@ typedef struct snake{
     size_t d; //Direction
     size_t animate;
     size_t animateCnt;
+    size_t totalPoints;
     pthread_mutex_t moveLock;
     segm *seg;
 }snek;

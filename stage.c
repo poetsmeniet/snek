@@ -6,6 +6,10 @@
 #include "stage.h"
 #define clear() printf("\033[H\033[J") //to clear the linux term
 
+void addPoints(snek *snek, fSeg *seg){
+    snek->totalPoints += seg->points;
+}
+
 static int foodFieldCollision(fSeg *obj, snek *snek){
         if(obj->d == 1 && (obj->y) >= (snek->cols - 2)){
             return 1;
@@ -147,6 +151,7 @@ extern void pushFoodSegments(food *mice, size_t amount, snek *snek){
         head->next->x = rand() % snek->rows;
         head->next->y = rand() % snek->cols;
         head->next->speed = rand() % 5;
+        head->next->points = 1;
         head->next->next = NULL;
 
         //Move food a bit from borders
@@ -174,6 +179,7 @@ void spawnFood(size_t amount, food *mice, snek *snek){
     mice->seg->y = rand() % snek->cols;
     mice->seg->speed = rand() % 10;
     mice->seg->d = rand() % 4;
+    mice->seg->points = 1;
     mice->seg->next = NULL;
 
     if(mice->seg->x == 0 || mice->seg->x == 1)
@@ -244,6 +250,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                 if((int) m->x == snek->seg->x && (int) m->y == snek->seg->y){//Verify segments
                     m->x += 1000;//move food out of field..
                     deleteFoodSegment(mice, m, snek);
+                    addPoints(snek, m);
                     addSegments(snek, 1);
                     skip++;
                 }else{
@@ -293,7 +300,8 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
     //Food moves
     //moveFood(mice, snek);
 
-    printf("%s\n", printBuf);
-    free(printBuf);
     clear();
+    printf("%s\n", printBuf);
+    printf("\nPoints: %d\n", snek->totalPoints);
+    free(printBuf);
 }
