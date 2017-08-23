@@ -36,29 +36,29 @@ void *captureKeyCodes(void *arg){
         read(fd, &ev, sizeof(struct input_event));
 
         //Capture keypresses, onDown
-        if(ev.code == 103 && ev.value == 1 && sn->seg->d != 2){
-            //pthread_mutex_lock(&sn->moveLock);
+        if(ev.code == 103 && ev.value == 1\
+                && sn->seg->d != 2\
+                && sn->seg->next->d != 2){
             sn->seg->d = 0; //Up
             sn->seg->tok = '^';
-            //pthread_mutex_unlock(&sn->moveLock);
         }
-        if(ev.code == 106 && ev.value == 1 && sn->seg->d != 3){
-            //pthread_mutex_lock(&sn->moveLock);
+        if(ev.code == 106 && ev.value == 1\
+                && sn->seg->d != 3
+                && sn->seg->next->d != 3){
             sn->seg->d = 1; //Right
             sn->seg->tok = '>';
-            //pthread_mutex_unlock(&sn->moveLock);
         }
-        if(ev.code == 108 && ev.value == 1 && sn->seg->d != 0){
-            //pthread_mutex_lock(&sn->moveLock);
+        if(ev.code == 108 && ev.value == 1\
+               && sn->seg->d != 0\
+               && sn->seg->next->d != 0){
             sn->seg->d = 2; //Down
             sn->seg->tok = 'v';
-            //pthread_mutex_unlock(&sn->moveLock);
         }
-        if(ev.code == 105 && ev.value == 1 && sn->seg->d != 1){
-            //pthread_mutex_lock(&sn->moveLock);
+        if(ev.code == 105 && ev.value == 1\
+               && sn->seg->d != 1\
+               && sn->seg->next->d != 1){
             sn->seg->d = 3;//Left
             sn->seg->tok = '<';
-            //pthread_mutex_unlock(&sn->moveLock);
         }
     }
 }

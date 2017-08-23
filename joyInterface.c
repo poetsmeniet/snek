@@ -53,19 +53,27 @@ void *captureJoyCodesHidraw(void *arg){
         printf("%d\t%d\t%d", js.value, js.value1, js.value2);
         printf("\n");
         //Capture buttons, onDown
-        if(js.value == 8326915 && sn->seg->d != 2){
+        if(js.value == 8326915\
+                && sn->seg->d != 2\
+                && sn->seg->next->d != 2){
             sn->seg->d = 0; //Up
             sn->seg->tok = '^';
         }
-        if(js.value == 2147421955 && sn->seg->d != 3){
+        if(js.value == 2147421955\
+                && sn->seg->d != 3\
+                && sn->seg->next->d != 3){
             sn->seg->d = 1; //Right
             sn->seg->tok = '>';
         }
-        if(js.value == -8450301 && sn->seg->d != 0){
+        if(js.value == -8450301\
+                && sn->seg->d != 0\
+                && sn->seg->next->d != 0){
             sn->seg->d = 2; //Down
             sn->seg->tok = 'v';
         }
-        if(js.value == 2130710275 && sn->seg->d != 1){
+        if(js.value == 2130710275\
+                && sn->seg->d != 1\
+                && sn->seg->next->d != 1){
             sn->seg->d = 3;//Left
             sn->seg->tok = '<';
         }
@@ -98,19 +106,27 @@ void *captureJoyCodes(void *arg){
         //printf("%d\t%d\t%d", js.time, js.value, js.value2);
         //printf("\n");
         //Capture buttons, onDown
-        if(js.value == 16941057 && sn->seg->d != 2){
+        if(js.value == 16941057
+                && sn->seg->d != 2\
+                && sn->seg->next->d != 2){
             sn->seg->d = 0; //Up
             sn->seg->tok = '^';
         }
-        if(js.value == 163839 && sn->seg->d != 3){
+        if(js.value == 163839\
+                && sn->seg->d != 3\
+                && sn->seg->next->d != 3){
             sn->seg->d = 1; //Right
             sn->seg->tok = '>';
         }
-        if(js.value == 16941055 && sn->seg->d != 0){
+        if(js.value == 16941055\
+                && sn->seg->d != 0\
+                && sn->seg->next->d != 0){
             sn->seg->d = 2; //Down
             sn->seg->tok = 'v';
         }
-        if(js.value == 163841 && sn->seg->d != 1){
+        if(js.value == 163841\
+                && sn->seg->d != 1\
+                && sn->seg->next->d != 1){
             sn->seg->d = 3;//Left
             sn->seg->tok = '<';
         }

@@ -69,7 +69,7 @@ static int fieldCollision(snek *snek){
         if(snek->seg->d == 1 && (snek->seg->y) == snek->cols){
             return 1;
         }
-        if(snek->seg->d == 3 && (snek->seg->y) == 0){
+        if(snek->seg->d == 3 && (snek->seg->y) == -1){
             return 1;
         }
         if(snek->seg->d == 2 && (snek->seg->x) == snek->rows){
@@ -300,7 +300,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
     //Food moves
     //moveFood(mice, snek);
 
-    clear();
+//    clear();
     printf("%s\n", printBuf);
     printf("\nPoints: %d\n", snek->totalPoints);
     free(printBuf);
