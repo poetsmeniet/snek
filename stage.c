@@ -299,7 +299,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                     addSegments(snek, 1);
                     skip++;
                 }else{
-                    if((int) m->x == r && (int) m->y == c){//Verify segments
+                    if((int) m->x == r && (int) m->y == c && skip == 0){//Verify segments
                         printBuf[bufMmb] = m->tok;
                         bufMmb++;
                         printBuf[bufMmb] = ' ';
@@ -345,7 +345,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
     //Food moves
     moveFood(mice, snek);
 
-//    clear();
+ //   clear();
     printf("%s\n", printBuf);
     printf("\nPoints: %d\n", snek->totalPoints);
     free(printBuf);
