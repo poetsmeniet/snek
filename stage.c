@@ -19,6 +19,15 @@ static void reverseDirection(fSeg *ft){
 
             ft->d = newD;
 }
+static void reverseDirection2(fSeg *ft){
+            int newD;
+            if(ft->d < 2)
+                newD = ft->d + 2;
+            else
+                newD = ft->d - 2;
+
+            ft->d = newD;
+}
 
 static int foodSnekCollision(fSeg *obj, snek *snek){
     //Check for food segment next x/y if collision with snek occurs
@@ -27,17 +36,17 @@ static int foodSnekCollision(fSeg *obj, snek *snek){
         segm *head = snek->seg;
 
         while(head->next != NULL){
-            if(((int)obj->x - 1) == head->x)
+            if(((int)obj->x - 1) == head->x && (int)obj->y == head->y)
                 return 1;
             head = head->next;
         }
     }
-    //Right
+    ////Right
     if(obj->d == 1){
         segm *head = snek->seg;
 
         while(head->next != NULL){
-            if(((int)obj->y + 1) == head->y)
+            if(((int)obj->y + 1) == head->y && (int)obj->x == head->x)
                 return 1;
             head = head->next;
         }
@@ -47,7 +56,7 @@ static int foodSnekCollision(fSeg *obj, snek *snek){
         segm *head = snek->seg;
 
         while(head->next != NULL){
-            if(((int)obj->x + 1) == head->x)
+            if(((int)obj->x + 1) == head->x && (int)obj->y == head->y)
                 return 1;
             head = head->next;
         }
@@ -57,7 +66,7 @@ static int foodSnekCollision(fSeg *obj, snek *snek){
         segm *head = snek->seg;
 
         while(head->next != NULL){
-            if(((int)obj->y - 1) == head->y)
+            if(((int)obj->y - 1) == head->y && (int)obj->x == head->x)
                 return 1;
             head = head->next;
         }
@@ -66,18 +75,14 @@ static int foodSnekCollision(fSeg *obj, snek *snek){
 }
 
 static int foodFieldCollision(fSeg *obj, snek *snek){
-        if(obj->d == 1 && (obj->y) >= (snek->cols - 2)){
+        if(obj->d == 1 && (int)(obj->y) >= (snek->cols - 1))
             return 1;
-        }
-        if(obj->d == 3 && (obj->y) <= 1){
+        if(obj->d == 3 && (int)(obj->y) <= 1)
             return 1;
-        }
-        if(obj->d == 2 && (obj->x) >= (snek->rows - 2)){
+        if(obj->d == 2 && (int)(obj->x) >= (snek->rows - 1))
             return 1;
-        }
-        if(obj->d == 0 && (obj->x) <= 1){
+        if(obj->d == 0 && (int)(obj->x) <= 1)
             return 1;
-        }
         return 0;
 }
 
@@ -92,7 +97,7 @@ extern void moveFood(food *mice, snek *snek){
         
         //Food collides with snek
         if(foodSnekCollision(ft, snek))
-            reverseDirection(ft);
+            reverseDirection2(ft);
         
         //Speed multiplier
         int mp = ft->speed;
@@ -109,6 +114,7 @@ extern void moveFood(food *mice, snek *snek){
 
         ft->d = rand() % 4;
         
+        //printf(" - %c now has d %d, and x: %d, and y: %d\n", ft->tok, ft->d, (int)ft->x, (int)ft->y);
         ft = ft->next;
     }
 }
@@ -226,7 +232,8 @@ void spawnFood(size_t amount, food *mice, snek *snek){
     mice->seg->x = rand() % snek->rows;
     mice->seg->y = rand() % snek->cols;
     mice->seg->speed = rand() % 10;
-    mice->seg->d = rand() % 4;
+    mice->seg->d = 0;
+    //mice->seg->d = rand() % 4;
     mice->seg->points = 1;
     mice->seg->next = NULL;
 
@@ -348,7 +355,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
     //Food moves
     moveFood(mice, snek);
 
-    clear();
+//    clear();
     printf("%s\n", printBuf);
     printf("\nPoints: %d\n", snek->totalPoints);
     free(printBuf);
