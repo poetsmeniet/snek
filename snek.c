@@ -47,7 +47,9 @@ extern void initSnek(snek *snek, int COLS, int ROWS){
     snek->seg->y = 5;
     snek->seg->d = 1;
     snek->totalPoints = 0;
+    snek->animate = 0;
     snek->animateCnt = 0;
+    snek->lvl= 1;
     snek->seg->next = NULL;
     pthread_mutex_init(&snek->moveLock, NULL);
 }

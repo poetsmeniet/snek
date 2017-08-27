@@ -170,8 +170,12 @@ void deleteFoodSegment(food *mice, fSeg *seg, snek *snek){
         ft = ft->next;
         foodCnt++;
     }
-    if(foodCnt == 1)
-        pushFoodSegments(mice, (rand() % 5) + 1, snek);
+
+    //New level achieved
+    if(foodCnt == 1){
+        pushFoodSegments(mice, (rand() % 4) + 1, snek);
+        snek->lvl += 1;
+    }
 
     animateSnek(snek, 1);
 }
@@ -190,11 +194,12 @@ extern void pushFoodSegments(food *mice, size_t amount, snek *snek){
 
     for(i = 0; i < amount; i++){
         head->next = malloc(1 * sizeof(fSeg));
-        head->next->tok = i+1+'0';
+        //head->next->tok = i+1+'0';
+        head->next->tok = '0';
         head->next->d = head->d;
         head->next->x = rand() % snek->rows;
         head->next->y = rand() % snek->cols;
-        head->next->speed = rand() % 5;
+        head->next->speed = rand() % 3;
         head->next->points = 1;
         head->next->next = NULL;
 
@@ -221,9 +226,8 @@ void spawnFood(size_t amount, food *mice, snek *snek){
     mice->seg->tok = '0';
     mice->seg->x = rand() % snek->rows;
     mice->seg->y = rand() % snek->cols;
-    mice->seg->speed = rand() % 10;
-    mice->seg->d = 0;
-    //mice->seg->d = rand() % 4;
+    mice->seg->speed = rand() % 3;
+    mice->seg->d = rand() % 4;
     mice->seg->points = 1;
     mice->seg->next = NULL;
 
@@ -348,6 +352,6 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
 
     clear();
     printf("%s\n", printBuf);
-    printf("\nPoints: %d\n", snek->totalPoints);
+    printf("\nLevel %d, Points: %d\n", snek->lvl, snek->totalPoints);
     free(printBuf);
 }

@@ -13,10 +13,10 @@ int main(void){
 
     initSnek(&snek, COLS, ROWS);
 
-    addSegments(&snek, 5);
+    addSegments(&snek, 12);
 
     food *mice = malloc(sizeof(food));
-    spawnFood(5, mice, &snek);
+    spawnFood(1, mice, &snek);
 
     if(!startKeybInterface(&snek)){
         printf("Error with keyboard interface thread, exiting..\n");
@@ -26,10 +26,11 @@ int main(void){
         printf("Error with joy interface thread, cont..\n");
 
     while(1){
-        printField(COLS, ROWS, &snek, mice);
         moveSnek(&snek);
         moveFood(mice, &snek);
-        usleep(200000);
+        printField(COLS, ROWS, &snek, mice);
+        //Todo: add check for negative values
+        usleep(300000 - (snek.lvl * 5000));
     }
     return 0;
 }
