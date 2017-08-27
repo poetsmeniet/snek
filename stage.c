@@ -19,15 +19,6 @@ static void reverseDirection(fSeg *ft){
 
             ft->d = newD;
 }
-static void reverseDirection2(fSeg *ft){
-            int newD;
-            if(ft->d < 2)
-                newD = ft->d + 2;
-            else
-                newD = ft->d - 2;
-
-            ft->d = newD;
-}
 
 static int foodSnekCollision(fSeg *obj, snek *snek){
     //Check for food segment next x/y if collision with snek occurs
@@ -97,7 +88,7 @@ extern void moveFood(food *mice, snek *snek){
         
         //Food collides with snek
         if(foodSnekCollision(ft, snek))
-            reverseDirection2(ft);
+            reverseDirection(ft);
         
         //Speed multiplier
         int mp = ft->speed;
@@ -114,7 +105,6 @@ extern void moveFood(food *mice, snek *snek){
 
         ft->d = rand() % 4;
         
-        //printf(" - %c now has d %d, and x: %d, and y: %d\n", ft->tok, ft->d, (int)ft->x, (int)ft->y);
         ft = ft->next;
     }
 }
