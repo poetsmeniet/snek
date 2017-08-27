@@ -333,9 +333,10 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                 exit(1);
         }
 
-        if(snek->animate == 1 && snek->animateCnt == 40)
+        //Kind of an animation
+        if(snek->animate == 1 && snek->animateCnt == 20)
             animateSnek(snek, 0);
-        else if(snek->animate == 1 && snek->animateCnt <= 80)
+        else if(snek->animate == 1 && snek->animateCnt <= 20)
             snek->animateCnt++;
 
         printBuf[bufMmb] = '\n';
@@ -345,7 +346,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
     //Food moves
     moveFood(mice, snek);
 
- //   clear();
+    clear();
     printf("%s\n", printBuf);
     printf("\nPoints: %d\n", snek->totalPoints);
     free(printBuf);

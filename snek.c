@@ -8,21 +8,19 @@ extern void animateSnek(snek *snek, size_t type){
     segm *head = snek->seg->next;
     char tok = 'O';
 
-    if(type == 1)
-        tok = '0';
-    else
+    if(type == 1){
+        tok = '@';
+        snek->animate = 1;
+    }else{
         snek->animateCnt = 0;
+        snek->animate = 0;
+    }
 
     while(head->next != NULL){
         head->tok = tok;
         head = head->next;
     }
     head->tok = tok;
-
-    snek->animate = 1;
-
-    //if(type == 1)
-    //    animateSnek(snek, 0);
 }
 
 size_t getListSize(void *list){
@@ -49,6 +47,7 @@ extern void initSnek(snek *snek, int COLS, int ROWS){
     snek->seg->y = 5;
     snek->seg->d = 1;
     snek->totalPoints = 0;
+    snek->animateCnt = 0;
     snek->seg->next = NULL;
     pthread_mutex_init(&snek->moveLock, NULL);
 }
