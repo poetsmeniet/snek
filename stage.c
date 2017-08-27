@@ -10,6 +10,61 @@ void addPoints(snek *snek, fSeg *seg){
     snek->totalPoints += seg->points;
 }
 
+static void reverseDirection(fSeg *ft){
+            int newD;
+            if(ft->d < 2)
+                newD = ft->d + 2;
+            else
+                newD = ft->d - 2;
+
+            ft->d = newD;
+}
+
+static int foodSnekCollision(fSeg *obj, snek *snek){
+    //Check for food segment next x/y if collision with snek occurs
+    //Up
+    if(obj->d == 0){
+        segm *head = snek->seg;
+
+        while(head->next != NULL){
+            if(((int)obj->x - 1) == head->x)
+                return 1;
+            head = head->next;
+        }
+    }
+    //Right
+    if(obj->d == 1){
+        segm *head = snek->seg;
+
+        while(head->next != NULL){
+            if(((int)obj->y + 1) == head->y)
+                return 1;
+            head = head->next;
+        }
+    }
+    //Down
+    if(obj->d == 2){
+        segm *head = snek->seg;
+
+        while(head->next != NULL){
+            if(((int)obj->x + 1) == head->x)
+                return 1;
+            head = head->next;
+        }
+    }
+    //Left
+    if(obj->d == 3){
+        segm *head = snek->seg;
+
+        while(head->next != NULL){
+            if(((int)obj->y - 1) == head->y)
+                return 1;
+            head = head->next;
+        }
+    }
+    return 0;
+}
+
 static int foodFieldCollision(fSeg *obj, snek *snek){
         if(obj->d == 1 && (obj->y) >= (snek->cols - 2)){
             return 1;
@@ -32,20 +87,15 @@ extern void moveFood(food *mice, snek *snek){
 
     while(ft != NULL){
         //Food collides with field boundary
-        if(foodFieldCollision(ft, snek)){
-            //Reverse direction
-            int newD;
-            if(ft->d < 2)
-                newD = ft->d + 2;
-            else
-                newD = ft->d - 2;
-
-            ft->d = newD;
-        }
-
-        //multiplier
+        if(foodFieldCollision(ft, snek))
+            reverseDirection(ft);
+        
+        //Food collides with snek
+        if(foodSnekCollision(ft, snek))
+            reverseDirection(ft);
+        
+        //Speed multiplier
         int mp = ft->speed;
-        //int mp = 200.0;
 
         //Move segment 
         if(ft->d == 0)
@@ -57,9 +107,7 @@ extern void moveFood(food *mice, snek *snek){
         if(ft->d == 3)
             ft->y -= speed * mp;
 
-        //Only change direction on whole numbers (compl coords)
-        //if(ft->x == (int)ft->x || ft->y == (int)ft->y)
-            ft->d = rand() % 4;
+        ft->d = rand() % 4;
         
         ft = ft->next;
     }
@@ -288,7 +336,7 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
                 exit(1);
         }
 
-        if(snek->animate == 1 && snek->animateCnt == 80)
+        if(snek->animate == 1 && snek->animateCnt == 40)
             animateSnek(snek, 0);
         else if(snek->animate == 1 && snek->animateCnt <= 80)
             snek->animateCnt++;
@@ -298,9 +346,9 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
     }
 
     //Food moves
-    //moveFood(mice, snek);
+    moveFood(mice, snek);
 
-//    clear();
+    clear();
     printf("%s\n", printBuf);
     printf("\nPoints: %d\n", snek->totalPoints);
     free(printBuf);
