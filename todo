@@ -1,0 +1,11 @@
+- keyboard tester + error handling
+- food teleports sometimes into snake
+- increase speed of food at each new level
+- strike
+- pauze button
+- add game over screen
+
+- learning:
+https://github.com/fabiangreffrath/crispy-doom/blob/master/src/setup/joystick.c
+and source SDL for joystick drivers
+- typecasting, float to int.. why not?
