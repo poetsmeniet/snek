@@ -119,7 +119,7 @@ static int fieldCollision(snek *snek){
         if(snek->seg->d == 2 && (snek->seg->x) == snek->rows){
             return 1;
         }
-        if(snek->seg->d == 0 && (snek->seg->x) == 0){
+        if(snek->seg->d == 0 && (snek->seg->x) == -1){
             return 1;
         }
         return 0;
@@ -147,14 +147,9 @@ void deleteFoodSegment(food *mice, fSeg *seg, snek *snek){
         if(head == seg){
             //relink previous item in list to next, if needed
             if(head->next != NULL){
-                //printf("relinking\n");
                 prevSeg->next = head->next;
-            }
-            else{
-                if(prevSeg == seg){
-                    //printf("this is first and last item..\n");
-                }else{
-                    //printf(" - last item, so deleting and removing prev link(%c) to last item\n", prevSeg->tok);
+            }else{
+                if(prevSeg != seg){
                     prevSeg->next = NULL;
                     free(head);
                 }
@@ -178,6 +173,32 @@ void deleteFoodSegment(food *mice, fSeg *seg, snek *snek){
     }
 
     animateSnek(snek, 1);
+}
+
+static void addFood(food *mice, snek *snek, char *printBuf, size_t *bufMmb, int *skip, int r, int c){
+    fSeg *m = mice->seg;
+    size_t foodCnt = 0;
+    
+    while(m != NULL){
+        //Detect colision with "food" and snek head
+        if((int) m->x == snek->seg->x && (int) m->y == snek->seg->y){//Verify segments
+            m->x += 1000;//move food out of field..
+            deleteFoodSegment(mice, m, snek);
+            addPoints(snek, m);
+            addSegments(snek, 1);
+            skip++;
+        }else{
+            if((int) m->x == r && (int) m->y == c && *skip == 0){//Verify segments
+                printBuf[*bufMmb] = m->tok;
+                *bufMmb = *bufMmb + 1;
+                printBuf[*bufMmb] = ' ';
+                *bufMmb = *bufMmb + 1;
+                *skip = *skip + 1;;
+            }
+        }
+        foodCnt++;
+        m = m->next;
+    }
 }
 
 extern void pushFoodSegments(food *mice, size_t amount, snek *snek){
@@ -291,32 +312,9 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
             }
 
             //Add food to buffer/ field
-            fSeg *m = mice->seg;
-            size_t foodCnt = 0;
+            addFood(mice, snek, printBuf, &bufMmb, &skip, r, c);
 
-            while(m != NULL){
-                //Detect colision with "food" and snek head
-                if((int) m->x == snek->seg->x && (int) m->y == snek->seg->y){//Verify segments
-                    m->x += 1000;//move food out of field..
-                    deleteFoodSegment(mice, m, snek);
-                    addPoints(snek, m);
-                    addSegments(snek, 1);
-                    skip++;
-                }else{
-                    if((int) m->x == r && (int) m->y == c && skip == 0){//Verify segments
-                        printBuf[bufMmb] = m->tok;
-                        bufMmb++;
-                        printBuf[bufMmb] = ' ';
-                        bufMmb++;
-                        skip++;
-                    }
-
-                }
-                foodCnt++;
-                m = m->next;
-            }
-
-            if(skip == 0){ //Otherwise print something else
+            if(skip == 0){ //Add regular field token
                 printBuf[bufMmb] = tok1;
                 bufMmb++;
                 printBuf[bufMmb] = tok2;
@@ -327,13 +325,13 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
 
         //Detect snek body colision on next coord
         if(selfCollision(snek)){
-                printf("%s\n", printBuf);
+                printf("Game over, you cannot eat yourself\n");
                 exit(1);
         }
 
         //Detect playfield boundary collision
         if(fieldCollision(snek)){
-                printf("%s\n", printBuf);
+                printf("Game over, you cannot eat the wall\n");
                 exit(1);
         }
 
