@@ -1,2 +1,12 @@
 # snek
-"Snake" for in your terminal, without dependencies
+"Snake" for in your terminal, without dependencies or framework other than terminal and linux
+
+Features:
+- Increasing speed, difficulty, levels and points
+- Customizable game dimensions
+- Random food (ie mice) generation 
+- Random food movement and speed
+- Food avoids snek, if possible
+- Custom framework 
+ - Collision detection
+ - printing of objects
