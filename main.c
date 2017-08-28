@@ -22,8 +22,10 @@ int main(void){
         printf("Error with keyboard interface thread, exiting..\n");
         return 1;
     }
-    if(!startJoyInterface(&snek))
+    if(!startJoyInterface(&snek)){
         printf("Error with joy interface thread, cont..\n");
+        sleep(1);
+    }
 
     while(1){
         moveSnek(&snek);
