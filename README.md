@@ -4,6 +4,7 @@
 Features:
 - Increasing speed, difficulty, levels and points
 - Customizable game dimensions
+- Snek animations
 - Random food (ie mice) generation 
 - Random food movement and speed
 - Food avoids snek, if possible
