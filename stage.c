@@ -6,6 +6,25 @@
 #include "stage.h"
 #define clear() printf("\033[H\033[J") //to clear the linux term
 
+static void exitGame(snek *snek, food *mice, char *printBuf){
+    segm *head = snek->seg;
+    segm *curr;
+    while ((curr = head) != NULL) { // set curr to head, stop if list empty.
+        head = head->next;          // advance head to next element.
+        free (curr);                // delete saved pointer.
+    }
+    
+    fSeg *head2 = mice->seg;
+    fSeg *curr2;
+    while ((curr2 = head2) != NULL) { // set curr to head, stop if list empty.
+        head2 = head2->next;          // advance head to next element.
+        free (curr2);                // delete saved pointer.
+    }
+
+    free(printBuf);
+    exit(1);
+}
+
 void addPoints(snek *snek, fSeg *seg){
     snek->totalPoints += seg->points;
 }
@@ -326,13 +345,13 @@ extern void printField(int cols, int rows, snek *snek, food *mice){
         //Detect snek body colision on next coord
         if(selfCollision(snek)){
                 printf("Game over, you cannot eat yourself\n");
-                exit(1);
+                exitGame(snek, mice, printBuf);
         }
 
         //Detect playfield boundary collision
         if(fieldCollision(snek)){
                 printf("Game over, you cannot eat the wall\n");
-                exit(1);
+                exitGame(snek, mice, printBuf);
         }
 
         //Kind of an animation
