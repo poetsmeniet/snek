@@ -11,4 +11,4 @@ Features:
 - Custom framework 
  - Collision detection
  - printing of objects
- https://www.geenbs.nl/images/Snek_preview.gif
+ <img src="https://www.geenbs.nl/images/Snek_preview.gif">
